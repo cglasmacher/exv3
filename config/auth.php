@@ -38,8 +38,7 @@ return [
     'guards' => [
         'web' => [
             'driver' => 'sanctum',
-            'provider' => 'users',
-            'hash'     => false,
+            'provider' => null,
         ],
     ],
 
