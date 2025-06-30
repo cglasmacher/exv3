@@ -22,7 +22,9 @@ use Illuminate\Routing\Middleware\ThrottleRequests;
 class Kernel extends HttpKernel
 {
     /**
-     * The application's global HTTP middleware stack.
+     * Global HTTP middleware stack.
+     *
+     * These middleware run during every request to your application.
      *
      * @var array<int, class-string|string>
      */
@@ -45,8 +47,8 @@ class Kernel extends HttpKernel
             EncryptCookies::class,
             AddQueuedCookiesToResponse::class,
             StartSession::class,
-            ShareErrorsFromSession::class,
             HandleInertiaRequests::class,
+            ShareErrorsFromSession::class,
             VerifyCsrfToken::class,
             SubstituteBindings::class,
         ],
@@ -70,15 +72,19 @@ class Kernel extends HttpKernel
         'guest' => \App\Http\Middleware\RedirectIfAuthenticated::class,
         'signed' => \Illuminate\Routing\Middleware\ValidateSignature::class,
         'throttle' => ThrottleRequests::class,
+        'throttle:api' => \Illuminate\Routing\Middleware\ThrottleRequests::class,
         'verified' => \Illuminate\Auth\Middleware\EnsureEmailIsVerified::class,
     ];
 
     /**
      * The priority-sorted list of middleware.
      *
+     * This forces non-global middleware to always be in the given order.
+     *
      * @var array<int, class-string|string>
      */
     protected $middlewarePriority = [
+        // Global Middleware
         TrustProxies::class,
         HandleCors::class,
         PreventRequestsDuringMaintenance::class,
@@ -88,11 +94,13 @@ class Kernel extends HttpKernel
         EncryptCookies::class,
         AddQueuedCookiesToResponse::class,
         StartSession::class,
-        ShareErrorsFromSession::class,
         HandleInertiaRequests::class,
+        ShareErrorsFromSession::class,
         VerifyCsrfToken::class,
         SubstituteBindings::class,
         ThrottleRequests::class,
+
+        // Route Middleware
         \App\Http\Middleware\Authenticate::class,
         \Illuminate\Auth\Middleware\AuthenticateWithBasicAuth::class,
         \Illuminate\Auth\Middleware\EnsureEmailIsVerified::class,
